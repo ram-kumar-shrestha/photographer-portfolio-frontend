@@ -31,12 +31,15 @@ const ForgotPassword = () => {
         }}
       >
         <Col xs={22} sm={18} md={12} lg={8} xl={6}>
-          <Alert
-            type="info"
-            message="For demonstration purposes, the reset link will be displayed on the screen after submission. In a real application, this link would be sent to the user's email address."
-            showIcon
-            style={{ marginBottom: "16px" }}
-          />
+          {Boolean(resetLink) || (
+            <Alert
+              type="info"
+              title="Demo Note"
+              description="For demonstration purposes, the reset link will be displayed on the screen after submission. In a real application, this link would be sent to the user's email address."
+              showIcon
+              style={{ marginBottom: "16px" }}
+            />
+          )}
           <Card>
             <div style={{ textAlign: "center", marginBottom: "32px" }}>
               <Title level={2} style={{ marginBottom: "8px" }}>

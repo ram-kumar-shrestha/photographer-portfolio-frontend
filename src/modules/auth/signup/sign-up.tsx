@@ -1,6 +1,7 @@
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Flex, Form, Input, Row, Typography } from "antd";
 import { Link } from "react-router-dom";
+import ConfirmPassword from "../components/confirm-password";
 import { SignupFormKey } from "../services/signup/type";
 import { AuthUrl } from "../utils/url";
 import { useSignup } from "./hooks/useSignup";
@@ -69,6 +70,8 @@ const SignUp = () => {
                 placeholder="Enter your password"
               />
             </Form.Item>
+
+            <ConfirmPassword passwordFieldName={SignupFormKey.password} />
 
             <Form.Item>
               <Button
