@@ -1,73 +1,153 @@
-# React + TypeScript + Vite
+# Photographer Portfolio - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend application for the Photographer Portfolio built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+## Description
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A modern, responsive web application built with React and TypeScript, featuring user authentication, album management, and photo viewing capabilities.
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Node.js** (v16 or higher)
+- **npm** or **yarn**
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment Configuration
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Copy the `.env.example` file to `.env`:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
+
+2. Update the `.env` file with your backend API URL:
+
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+**Note**: If your backend is running on a different port or domain, update the `VITE_API_BASE_URL` accordingly.
+
+## Running the Application
+
+```bash
+# Development mode (with hot reload)
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+The application will be available at `http://localhost:5173` (default Vite port)
+
+## Features
+
+### Authentication
+
+- User registration (Sign Up)
+- User login (Sign In)
+- Password recovery (Forgot Password)
+- Password reset
+- User profile management
+
+### Album Management
+
+- View all albums
+- View individual album details
+- Create new albums
+- Update existing albums
+- Delete albums
+- Upload photos to albums
+
+## Project Structure
+
+```
+src/
+├── modules/
+│   ├── auth/          # Authentication components and services
+│   │   ├── signin/
+│   │   ├── signup/
+│   │   ├── forgot-password/
+│   │   └── reset-password/
+│   ├── albums/        # Album management components
+│   │   ├── list/
+│   │   ├── view/
+│   │   ├── add/
+│   │   ├── hooks/
+│   │   └── services/
+│   ├── profile/       # User profile components
+│   └── utils/         # Utility functions
+├── App.tsx            # Main application component
+├── main.tsx           # Application entry point
+├── axios.ts           # Axios configuration
+└── index.css          # Global styles
+```
+
+## Tech Stack
+
+- **Library**: React, Antd
+- **Language**: TypeScript
+- **Build Tool**: Vite
+- **HTTP Client**: Axios
+- **Styling**: CSS
+- **Code Quality**: ESLint
+
+## Development
+
+### Hot Module Replacement (HMR)
+
+This project uses Vite's Fast Refresh for instant updates during development without losing component state.
+
+### Linting
+
+```bash
+npm run lint
+```
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist/` directory.
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Environment Variables
+
+All environment variables must be prefixed with `VITE_` to be exposed to the application.
+
+Example:
+
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+## Connecting to Backend
+
+Make sure the backend server is running before starting the frontend application. The frontend will make API requests to the URL specified in `VITE_API_BASE_URL`.
+
+### Backend Setup
+
+1. Navigate to the backend directory: `cd ../backend`
+2. Install dependencies: `npm install`
+3. Configure environment variables (see backend README)
+4. Start the backend server: `npm run start:dev`
+5. Return to frontend and start the development server
+
+## License
+
+MIT
