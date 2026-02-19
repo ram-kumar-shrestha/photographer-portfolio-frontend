@@ -10,54 +10,27 @@ import {
   Col,
   Empty,
   Flex,
-  Modal,
   Row,
   Space,
   Spin,
   Typography,
 } from "antd";
-import { useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAlbum, useDeleteAlbum } from "../hooks/useAlbums";
-import { AlbumUrl } from "../utils/url";
+import { useParams } from "react-router-dom";
+import { useAlbumView } from "../hooks";
 
 const { Title, Paragraph, Text } = Typography;
 
 const AlbumView = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const { album, loading } = useAlbum(id || "");
-  const { loading: deleteLoading, action: deleteAlbum } = useDeleteAlbum();
-
-  const currentUser = useMemo(() => {
-    const user = localStorage.getItem("user");
-    return user ? JSON.parse(user) : null;
-  }, []);
-
-  const isOwner = useMemo(() => {
-    return album && currentUser && album.user.id === currentUser.id;
-  }, [album, currentUser]);
-
-  const handleDelete = async () => {
-    Modal.confirm({
-      title: "Delete Album",
-      content: "Are you sure you want to delete this album?",
-      okText: "Yes",
-      cancelText: "No",
-      onOk: async () => {
-        if (id) {
-          await deleteAlbum(id);
-          navigate(AlbumUrl.albums);
-        }
-      },
-    });
-  };
-
-  const handleEdit = () => {
-    if (id) {
-      navigate(AlbumUrl.editAlbum + id);
-    }
-  };
+  const {
+    album,
+    loading,
+    deleteLoading,
+    isOwner,
+    handleDelete,
+    handleEdit,
+    handleBackToAlbums,
+  } = useAlbumView(id || "");
 
   if (loading) {
     return (
@@ -81,7 +54,7 @@ const AlbumView = () => {
       <div style={{ padding: "24px" }}>
         <Button
           icon={<ArrowLeftOutlined />}
-          onClick={() => navigate(AlbumUrl.albums)}
+          onClick={handleBackToAlbums}
           style={{ marginBottom: "24px" }}
         >
           Back to Albums
@@ -95,7 +68,7 @@ const AlbumView = () => {
     <div style={{ padding: "24px" }}>
       <Button
         icon={<ArrowLeftOutlined />}
-        onClick={() => navigate(AlbumUrl.albums)}
+        onClick={handleBackToAlbums}
         style={{ marginBottom: "24px" }}
       >
         Back to Albums

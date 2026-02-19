@@ -4,73 +4,30 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { Button, Card, Col, Form, Image, Input, Row, Spin, Upload } from "antd";
-import type { UploadFile } from "antd";
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAlbum, useCreateAlbum, useUpdateAlbum } from "../hooks/useAlbums";
+import { useParams } from "react-router-dom";
+import { useAlbumForm } from "../hooks";
 import { AlbumFormKey } from "../services/list/type";
-import { AlbumUrl } from "../utils/url";
 
 const AlbumAddEdit = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const isEditMode = !!id;
-
-  const [form] = Form.useForm();
-  const { album, loading: fetchLoading } = useAlbum(id || "");
-  const { loading: createLoading, action: createAlbum } = useCreateAlbum();
-  const { loading: updateLoading, action: updateAlbum } = useUpdateAlbum(
-    id || "",
-  );
-
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [removePhotos, setRemovePhotos] = useState<string[]>([]);
-
-  const existingPhotos = useMemo(() => {
-    if (!album) return [];
-    return album.photos.filter((photo) => !removePhotos.includes(photo));
-  }, [album, removePhotos]);
-
-  const isLoading = isEditMode ? fetchLoading : false;
-  const isSubmitting = isEditMode ? updateLoading : createLoading;
-
-  useEffect(() => {
-    if (isEditMode && album) {
-      form.setFieldsValue({
-        [AlbumFormKey.title]: album.title,
-        [AlbumFormKey.category]: album.category,
-        [AlbumFormKey.description]: album.description,
-      });
-    }
-  }, [album, form, isEditMode]);
-
-  const handleRemoveExistingPhoto = (photo: string) => {
-    setRemovePhotos((prev) => [...prev, photo]);
-  };
-
-  const handleSubmit = async (values: {
-    title: string;
-    category: string;
-    description: string;
-  }) => {
-    const photos = fileList.map((file) => file.originFileObj as File);
-
-    if (isEditMode) {
-      await updateAlbum({ ...values, photos, removePhotos });
-      navigate(AlbumUrl.viewAlbum + id);
-    } else {
-      await createAlbum({ ...values, photos });
-      navigate(AlbumUrl.albums);
-    }
-  };
+  const {
+    form,
+    isEditMode,
+    isLoading,
+    isSubmitting,
+    fileList,
+    existingPhotos,
+    handleSubmit,
+    handleRemoveExistingPhoto,
+    handleFileListChange,
+    handleBack,
+  } = useAlbumForm(id);
 
   return (
     <div style={{ padding: "24px" }}>
       <Button
         icon={<ArrowLeftOutlined />}
-        onClick={() =>
-          navigate(isEditMode ? AlbumUrl.viewAlbum + id : AlbumUrl.albums)
-        }
+        onClick={handleBack}
         style={{ marginBottom: "24px" }}
       >
         Back to {isEditMode ? "Album" : "Albums"}
@@ -211,7 +168,7 @@ const AlbumAddEdit = () => {
                     listType="picture-card"
                     fileList={fileList}
                     onChange={({ fileList: newFileList }) =>
-                      setFileList(newFileList)
+                      handleFileListChange(newFileList)
                     }
                     beforeUpload={() => false}
                     multiple

@@ -1,51 +1,21 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Card,
-  Col,
-  Empty,
-  Flex,
-  Modal,
-  Row,
-  Spin,
-  Typography,
-} from "antd";
-import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAlbums, useDeleteAlbum } from "../hooks/useAlbums";
-import { AlbumUrl } from "../utils/url";
+import { Button, Card, Col, Empty, Flex, Row, Spin, Typography } from "antd";
+import { useAlbumList } from "../hooks";
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
 
 const AlbumList = () => {
-  const navigate = useNavigate();
-  const { albums, loading, refetch } = useAlbums();
-  const { loading: deleteLoading, action: deleteAlbum } = useDeleteAlbum();
-
-  const currentUser = useMemo(() => {
-    const user = localStorage.getItem("user");
-    return user ? JSON.parse(user) : null;
-  }, []);
-
-  const handleDelete = async (e: React.MouseEvent, albumId: string) => {
-    e.stopPropagation();
-    Modal.confirm({
-      title: "Delete Album",
-      content: "Are you sure you want to delete this album?",
-      okText: "Yes",
-      cancelText: "No",
-      onOk: async () => {
-        await deleteAlbum(albumId);
-        refetch();
-      },
-    });
-  };
-
-  const handleEdit = (e: React.MouseEvent, albumId: string) => {
-    e.stopPropagation();
-    navigate(AlbumUrl.editAlbum + albumId);
-  };
+  const {
+    albums,
+    loading,
+    deleteLoading,
+    handleDelete,
+    handleEdit,
+    handleView,
+    handleAddAlbum,
+    isOwner,
+  } = useAlbumList();
 
   return (
     <div style={{ padding: "24px" }}>
@@ -63,7 +33,7 @@ const AlbumList = () => {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => navigate(AlbumUrl.addAlbum)}
+            onClick={handleAddAlbum}
             size="large"
           >
             Add Album
@@ -77,7 +47,7 @@ const AlbumList = () => {
             <Empty description="No albums found" />
             <Button
               type="primary"
-              onClick={() => navigate(AlbumUrl.addAlbum)}
+              onClick={handleAddAlbum}
               style={{ marginTop: "16px" }}
             >
               Create First Album
@@ -86,7 +56,7 @@ const AlbumList = () => {
         ) : (
           <Row gutter={[24, 24]}>
             {albums.map((album) => {
-              const isOwner = currentUser && album.user.id === currentUser.id;
+              const albumIsOwner = isOwner(album.user.id);
 
               return (
                 <Col key={album.id} xs={24} sm={12} md={8} lg={6}>
@@ -94,7 +64,7 @@ const AlbumList = () => {
                     hoverable
                     title={album.title}
                     style={{ height: "100%", cursor: "pointer" }}
-                    onClick={() => navigate(AlbumUrl.viewAlbum + album.id)}
+                    onClick={() => handleView(album.id)}
                     cover={
                       album.photos.length > 0 && (
                         <img
@@ -110,12 +80,12 @@ const AlbumList = () => {
                       )
                     }
                     actions={
-                      !isOwner
+                      !albumIsOwner
                         ? []
                         : [
                             <Button
                               icon={<EditOutlined />}
-                              onClick={(e) => handleEdit(e, album.id)}
+                              onClick={() => handleEdit(album.id)}
                               block
                               type="text"
                             >
@@ -124,7 +94,7 @@ const AlbumList = () => {
                             <Button
                               danger
                               icon={<DeleteOutlined />}
-                              onClick={(e) => handleDelete(e, album.id)}
+                              onClick={() => handleDelete(album.id)}
                               loading={deleteLoading}
                               block
                               type="text"
