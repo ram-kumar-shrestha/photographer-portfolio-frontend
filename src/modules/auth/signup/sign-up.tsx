@@ -8,7 +8,7 @@ import { useSignup } from "./hooks/useSignup";
 const { Title, Text } = Typography;
 
 const SignUp = () => {
-  const { loading, signup } = useSignup();
+  const { loading, action: signup } = useSignup();
 
   return (
     <Row

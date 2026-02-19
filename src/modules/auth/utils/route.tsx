@@ -1,5 +1,5 @@
 import { Route } from "react-router-dom";
-import SignIn from "../signin";
+import SignIn from "../signin/sign-in";
 import SignUp from "../signup/sign-up";
 import { AuthUrl } from "./url";
 

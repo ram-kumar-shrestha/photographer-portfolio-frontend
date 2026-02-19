@@ -1,5 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import SignIn from "./modules/auth/signin";
+import SignIn from "./modules/auth/signin/sign-in";
 import { AuthRoutes } from "./modules/auth/utils/route";
 
 function App() {

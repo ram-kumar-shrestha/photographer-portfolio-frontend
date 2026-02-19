@@ -19,7 +19,7 @@ const { Title, Text } = Typography;
 
 const SignIn = () => {
   const { md: isLargerScreen } = Grid.useBreakpoint();
-  const { loading, login } = useLogin();
+  const { loading, action: login } = useLogin();
 
   return (
     <Row
