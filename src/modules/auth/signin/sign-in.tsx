@@ -11,21 +11,15 @@ import {
   Typography,
 } from "antd";
 import { Link } from "react-router-dom";
+import { LoginFormKey } from "../services/signin/type";
 import { AuthUrl } from "../utils/url";
+import { useLogin } from "./hooks/useLogin";
 
 const { Title, Text } = Typography;
 
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
-
 const SignIn = () => {
   const { md: isLargerScreen } = Grid.useBreakpoint();
-
-  const onFinish = async (values: LoginFormValues) => {
-    console.log("Received values of form: ", values);
-  };
+  const { loading, login } = useLogin();
 
   return (
     <Row
@@ -46,13 +40,13 @@ const SignIn = () => {
 
           <Form
             name="login"
-            onFinish={onFinish}
+            onFinish={login}
             layout="vertical"
             size="large"
             autoComplete="off"
           >
             <Form.Item
-              name="email"
+              name={LoginFormKey.email}
               label="Email"
               rules={[
                 { required: true, message: "Please input your email!" },
@@ -63,11 +57,10 @@ const SignIn = () => {
             </Form.Item>
 
             <Form.Item
-              name="password"
+              name={LoginFormKey.password}
               label="Password"
               rules={[
                 { required: true, message: "Please input your password!" },
-                { min: 6, message: "Password must be at least 6 characters!" },
               ]}
             >
               <Input.Password
@@ -81,7 +74,7 @@ const SignIn = () => {
                 type="primary"
                 htmlType="submit"
                 block
-                // loading={loading}
+                loading={loading}
                 style={{ marginTop: "8px" }}
               >
                 Sign In
