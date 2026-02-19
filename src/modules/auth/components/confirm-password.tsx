@@ -5,12 +5,14 @@ interface ConfirmPasswordProps {
   passwordFieldName: string;
   label?: string;
   placeholder?: string;
+  optional?: boolean;
 }
 
 const ConfirmPassword = ({
   passwordFieldName,
   label = "Confirm Password",
   placeholder = "Confirm your password",
+  optional = false,
 }: ConfirmPasswordProps) => {
   return (
     <Form.Item
@@ -18,14 +20,29 @@ const ConfirmPassword = ({
       label={label}
       dependencies={[passwordFieldName]}
       rules={[
-        { required: true, message: "Please confirm your password!" },
-        { min: 6, message: "Password must be at least 6 characters!" },
         ({ getFieldValue }) => ({
           validator(_, value) {
-            if (!value || getFieldValue(passwordFieldName) === value) {
+            const password = getFieldValue(passwordFieldName);
+
+            if (optional && !password) {
               return Promise.resolve();
             }
-            return Promise.reject(new Error("Passwords do not match!"));
+
+            if (password && !value) {
+              return Promise.reject(new Error("Please confirm your password!"));
+            }
+
+            if (value && value.length < 6) {
+              return Promise.reject(
+                new Error("Password must be at least 6 characters!"),
+              );
+            }
+
+            if (value && password !== value) {
+              return Promise.reject(new Error("Passwords do not match!"));
+            }
+
+            return Promise.resolve();
           },
         }),
       ]}

@@ -1,5 +1,5 @@
 import { AuthUrl } from "@/modules/auth/utils/url";
-import Profile from "@/profile/profile";
+import Profile from "@/modules/profile/profile";
 import { Route } from "react-router-dom";
 import AlbumAddEdit from "../add/album-add";
 import AlbumList from "../list/album-list";

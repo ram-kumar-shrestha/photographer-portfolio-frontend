@@ -1,8 +1,8 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Form, Input, Row, Typography } from "antd";
 import { useEffect, useMemo } from "react";
-import ConfirmPassword from "../modules/auth/components/confirm-password";
-import { ProfileFormKey } from "../modules/auth/services/profile/type";
+import ConfirmPassword from "../auth/components/confirm-password";
+import { ProfileFormKey } from "../auth/services/profile/type";
 import { useUpdateProfile } from "./hooks/useProfile";
 
 const { Title, Text } = Typography;
@@ -112,7 +112,10 @@ const Profile = () => {
               />
             </Form.Item>
 
-            <ConfirmPassword passwordFieldName={ProfileFormKey.newPassword} />
+            <ConfirmPassword
+              passwordFieldName={ProfileFormKey.newPassword}
+              optional={true}
+            />
 
             <Form.Item>
               <Button

@@ -2,12 +2,14 @@ import { AuthUrl } from "@/modules/auth/utils/url";
 import { LogoutOutlined } from "@ant-design/icons";
 import { Button, Flex, Layout, Space } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export const AlbumLayout = () => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const [user, setUser] = useState(() =>
+    JSON.parse(localStorage.getItem("user") || "{}"),
+  );
 
   useEffect(() => {
     if (!user || !user.name) {
@@ -15,6 +17,18 @@ export const AlbumLayout = () => {
       navigate("/");
     }
   }, [navigate, user]);
+
+  // Listen for profile updates
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      const updatedUser = JSON.parse(localStorage.getItem("user") || "{}");
+      setUser(updatedUser);
+    };
+
+    window.addEventListener("profileUpdated", handleProfileUpdate);
+    return () =>
+      window.removeEventListener("profileUpdated", handleProfileUpdate);
+  }, []);
 
   const handleLogOut = () => {
     localStorage.removeItem("accessToken");
