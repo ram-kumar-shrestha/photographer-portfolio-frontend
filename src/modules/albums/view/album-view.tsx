@@ -1,4 +1,8 @@
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -6,13 +10,15 @@ import {
   Col,
   Empty,
   Flex,
+  Modal,
   Row,
   Space,
   Spin,
   Typography,
 } from "antd";
+import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAlbum } from "../hooks/useAlbums";
+import { useAlbum, useDeleteAlbum } from "../hooks/useAlbums";
 import { AlbumUrl } from "../utils/url";
 
 const { Title, Paragraph, Text } = Typography;
@@ -21,6 +27,37 @@ const AlbumView = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { album, loading } = useAlbum(id || "");
+  const { loading: deleteLoading, action: deleteAlbum } = useDeleteAlbum();
+
+  const currentUser = useMemo(() => {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
+  }, []);
+
+  const isOwner = useMemo(() => {
+    return album && currentUser && album.user.id === currentUser.id;
+  }, [album, currentUser]);
+
+  const handleDelete = async () => {
+    Modal.confirm({
+      title: "Delete Album",
+      content: "Are you sure you want to delete this album?",
+      okText: "Yes",
+      cancelText: "No",
+      onOk: async () => {
+        if (id) {
+          await deleteAlbum(id);
+          navigate(AlbumUrl.albums);
+        }
+      },
+    });
+  };
+
+  const handleEdit = () => {
+    if (id) {
+      navigate(AlbumUrl.editAlbum + id);
+    }
+  };
 
   if (loading) {
     return (
@@ -122,7 +159,28 @@ const AlbumView = () => {
               </Text>
               <Text type="secondary" style={{ fontSize: "12px" }}>
                 Last updated: {new Date(album.updatedAt).toLocaleString()}
-              </Text>{" "}
+              </Text>
+              {isOwner && (
+                <Flex gap={12} style={{ marginTop: "24px" }}>
+                  <Button
+                    type="text"
+                    icon={<EditOutlined />}
+                    onClick={handleEdit}
+                    size="large"
+                  >
+                    Edit Album
+                  </Button>
+                  <Button
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={handleDelete}
+                    loading={deleteLoading}
+                    size="large"
+                  >
+                    Delete Album
+                  </Button>
+                </Flex>
+              )}
             </Space>
           </Card>
         </Col>
