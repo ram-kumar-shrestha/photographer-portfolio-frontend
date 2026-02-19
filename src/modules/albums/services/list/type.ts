@@ -1,3 +1,5 @@
+import type { GenericReponse } from "@/modules/utils/type";
+
 export type Album = {
   id: string;
   title: string;
@@ -12,3 +14,5 @@ export type GetAlbumsResponse = {
   data: Album[];
   message: string;
 };
+
+export type GetAlbumResponse = GenericReponse<Album>;

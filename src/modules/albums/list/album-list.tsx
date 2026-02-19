@@ -54,7 +54,10 @@ const AlbumList = () => {
                 <Card
                   hoverable
                   title={album.title}
-                  style={{ height: "100%" }}
+                  style={{ height: "100%", cursor: "pointer" }}
+                  onClick={() =>
+                    navigate(AlbumUrl.viewAlbum.replace(":id", album.id))
+                  }
                   cover={
                     album.photos.length > 0 && (
                       <img

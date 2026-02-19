@@ -4,3 +4,45 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
+/* -------------------- */
+/* DOTS STYLING */
+/* -------------------- */
+
+.ant-carousel .slick-dots li button {
+  background: #000 !important;
+  opacity: 0.4;
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+  background: #000 !important;
+  opacity: 1;
+}
+
+/* -------------------- */
+/* ARROWS STYLING */
+/* -------------------- */
+.ant-carousel .slick-prev,
+.ant-carousel .slick-next {
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+}
+
+/* Remove default slick weird spacing */
+.ant-carousel .slick-prev::after,
+.ant-carousel .slick-next::after {
+  font-size: 18px;
+  line-height: 1 !important;
+  position: static !important;
+}
+.ant-carousel .slick-prev {
+  left: 12px !important;
+}
+
+.ant-carousel .slick-next {
+  right: 12px !important;
+}
