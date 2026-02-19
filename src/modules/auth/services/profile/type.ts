@@ -10,12 +10,14 @@ export const ProfileFormKey = {
   newPassword: "newPassword",
 };
 
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 export type UpdateProfileResponse = GenericReponse<{
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
+  user: User;
 }>;
 
 export type ChangePasswordResponse = GenericReponse<{

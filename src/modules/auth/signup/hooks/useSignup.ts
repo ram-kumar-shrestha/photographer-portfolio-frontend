@@ -1,3 +1,4 @@
+import { AlbumUrl } from "@/modules/albums/utils/url";
 import { useAction, type UseActionReturn } from "@/modules/hooks/useAction";
 import { useNavigate } from "react-router-dom";
 import { signupService } from "../../services/signup/api";
@@ -11,7 +12,7 @@ export const useSignup = (): UseActionReturn<PostSignupProps> => {
     localStorage.setItem("accessToken", data.accessToken);
     localStorage.setItem("user", JSON.stringify(data.user));
 
-    navigate("/profiles");
+    navigate(AlbumUrl.albums);
   };
   const { loading, error, action } = useAction(signup);
 

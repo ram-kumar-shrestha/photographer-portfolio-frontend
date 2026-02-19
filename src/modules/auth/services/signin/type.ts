@@ -1,4 +1,5 @@
 import type { GenericReponse } from "@/modules/utils/type";
+import type { User } from "../profile/type";
 
 export type PostLoginProps = {
   email: string;
@@ -11,9 +12,5 @@ export const LoginFormKey: Required<{ [K in keyof PostLoginProps]: K }> = {
 
 export type PostLoginResponse = GenericReponse<{
   accessToken: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
+  user: User;
 }>;
