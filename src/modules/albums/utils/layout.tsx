@@ -4,6 +4,7 @@ import { Button, Flex, Layout, Space } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { AlbumUrl } from "./url";
 
 export const AlbumLayout = () => {
   const navigate = useNavigate();
@@ -39,7 +40,9 @@ export const AlbumLayout = () => {
     <Layout style={{ backgroundColor: "transparent" }}>
       <Header style={{ backgroundColor: "transparent" }}>
         <Flex justify="space-between">
-          Hi, {user.name}
+          <Link to={AlbumUrl.albums} style={{ color: "#111" }}>
+            Hi, {user.name}
+          </Link>
           <Space>
             <Link to={AuthUrl.profile} style={{ color: "#111" }}>
               Profile
