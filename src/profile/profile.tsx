@@ -1,8 +1,8 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Form, Input, Row, Typography } from "antd";
 import { useEffect, useMemo } from "react";
-import ConfirmPassword from "../components/confirm-password";
-import { ProfileFormKey } from "../services/profile/type";
+import ConfirmPassword from "../modules/auth/components/confirm-password";
+import { ProfileFormKey } from "../modules/auth/services/profile/type";
 import { useUpdateProfile } from "./hooks/useProfile";
 
 const { Title, Text } = Typography;

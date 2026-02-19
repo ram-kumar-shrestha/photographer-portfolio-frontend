@@ -1,7 +1,7 @@
 import { useAction, type UseActionReturn } from "@/modules/hooks/useAction";
 import { message } from "antd";
-import { profileService } from "../../services/profile/api";
-import type { UpdateProfileProps } from "../../services/profile/type";
+import { profileService } from "../../modules/auth/services/profile/api";
+import type { UpdateProfileProps } from "../../modules/auth/services/profile/type";
 
 export const useUpdateProfile = (
   id?: string,
