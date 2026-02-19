@@ -3,4 +3,5 @@ export const AuthUrl = {
   signUp: "/signup",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
+  profile: "/profile",
 };

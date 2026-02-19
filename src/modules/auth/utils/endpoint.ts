@@ -3,4 +3,5 @@ export const AuthEndpoints = {
   signup: "/auth/signup",
   forgotPassword: "/auth/forgot-password",
   resetPassword: "/auth/reset-password",
+  profile: "/users/profile",
 };
